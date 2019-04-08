@@ -2,7 +2,7 @@ version: '1.0'
 services:
   - name: db
     type: mariadb
-    version: 10.3
+    version: 10.4
     configuration: StandAlone
     database: mautic
     username: mautic
@@ -30,21 +30,18 @@ services:
     deployTo:
       - mautic
 
-  # - name: pma
-  #   type: php
-  #   version: 7.1
-  #   source:
-  #     type: git
-  #     url: https://github.com/phpmyadmin/phpmyadmin
-  #   extensions:
-  #     - mysqli
-  #     - opcache
-  #   configFiles:
-  #     - dest: $MAIN_PATH/config.inc.php
-  #       src: ./configs/config.inc.php
-  #   localDeps: composer install
-  #   deployTo:
-  #     - ghost
+  - name: pma
+    type: docker
+    image: phpmyadmin/phpmyadmin
+    version: latest
+    ports:
+      - 80
+    remoteAccess: false
+    env:
+      PMA_HOST: "{{=service('db').getMasterAlias()}}"
+      PMA_PORT: "{{=service('db').getMainPort()}}"
+    deployTo:
+       - mautic
 
   - name: web
     type: nginx
@@ -57,8 +54,7 @@ services:
       - name: mautic
         static: true
         src: ./configs/mautic.conf
-    # - name: pma
-    #   static: true
+      - name: pma
     deployTo:
       - mautic
 
