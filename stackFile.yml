@@ -27,6 +27,7 @@ services:
       MAUTIC_DB_HOST: "{{=service('db').getMasterAlias()}}"
       MAUTIC_DB_USER: "{{=service('db').get('username')}}"
       MAUTIC_DB_PASSWORD: "{{=service('db').get('userPassword')}}"
+    volumes: /var/www/html 
     deployTo:
       - mautic
 
