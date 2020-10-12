@@ -19,7 +19,7 @@ services:
   - name: mautic
     type: docker
     image: mautic/mautic
-    version: fpm
+    version: v3-fpm
     ports:
       - 9000
     remoteAccess: false
@@ -28,7 +28,7 @@ services:
       MAUTIC_DB_USER: "{{=service('db').get('username')}}"
       MAUTIC_DB_PASSWORD: "{{=service('db').get('userPassword')}}"
     volumes:
-      - directory: /var/www/html 
+      - directory: /var/www/html
     deployTo:
       - mautic
 
